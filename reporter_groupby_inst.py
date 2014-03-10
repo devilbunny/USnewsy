@@ -6,8 +6,8 @@ import pandas as pd
 import numpy as np
 
 
-RePORTER_path = 'C:\Users\JAG\RePORTER\Output\RePORT_Append.csv'
-grouped_path = "C:\Users\JAG\RePORTER\Output\RePORT_group.csv"
+RePORTER_path = 'C:\Users\JAG\RePORTER\Output\RePORT_usn.csv'
+grouped_path = "C:\Users\JAG\USnewsy\RePORT_group.csv"
 
 RePORTER = pd.read_csv(RePORTER_path, sep = ',' , index_col = False, header =0, squeeze = True)
 
@@ -24,12 +24,38 @@ for date in RePORTER['BUDGET_START']:
         date = 1900
         Year.append(date)
         
-RePORTER['Year'] = Year
-RePORTER = RePORTER[RePORTER.Year > 2007]
-print RePORTER['Year'][0:50]
+costs = []
+for cost in RePORTER['TOTAL_COST']:
+    try:
+        cost = float(cost)
+    except ValueError:
+        cost = 0
+    costs.append(cost)
+
+RePORTER['TOTAL_COST'] = costs
+RePORTER = RePORTER[['ORG_NAME', 'TOTAL_COST']]
+RePORTER_NT = RePORTER[RePORTER['TOTAL_COST'] > 1]
+
+
+RL_sum = RePORTER.groupby('ORG_NAME').sum()
+RL_count = RePORTER.groupby('ORG_NAME').count()
+RL_count_NT = RePORTER_NT.groupby('ORG_NAME').count()
+
+RL_sum['ORG_NAME'] = RL_sum.index
+RL_count['ORG_NAME'] = RL_count.index
+RL_count_NT['ORG_NAME'] = RL_count_NT.index
+
+RL_count['GRANT_COUNT'] = RL_count['TOTAL_COST']
+RL_count = RL_count.drop('TOTAL_COST', axis = 1)
+RL_count_NT['GRANT_COUNT_NT'] = RL_count_NT['TOTAL_COST']
+RL_count_NT = RL_count_NT.drop('TOTAL_COST', axis = 1)
+
+
+RL_sum = RL_sum.merge(RL_count)
+RL_sum = RL_sum.merge(RL_count_NT)
+
 
 '''
-RWG_sum = RWG_fix.groupby('Name').sum()
 RWG_sum['Name'] = RWG_sum.index
 RWG_sum = RWG_sum[['Name','TOTAL_COST']]
 
@@ -38,8 +64,7 @@ RWG_pivot['Name'] = RWG_pivot.index
 RWG_pivot = RWG_pivot.merge(RWG_sum)
 
 RWG_fix = Residents.merge(RWG_pivot, how = 'outer')
-RWG_fix.to_csv(Residents_plus_grants_path, sep = ',' , index = False)
-
 '''
+RL_sum.to_csv(grouped_path, sep = ',')
 
 
