@@ -6,11 +6,11 @@ import pandas as pd
 from pubmedsearch import pubmedsearch, pmhits
 
 # Read in the rank-list which includes the organizations
-RL_path = 'C:\Users\LilaJeff\USnewsy\RL_USN.csv'
+RL_path = 'C:\Users\JAG\USnewsy\RL_USN.csv'
 RL = pd.read_csv(RL_path, index_col=False, header=0, squeeze=True)
 
 # Read in the impact-factor list
-IF_path = 'C:\Users\LilaJeff\USnewsy\impact_factors.csv'
+IF_path = 'C:\Users\JAG\USnewsy\impact_factors.csv'
 IF = pd.read_csv(IF_path, index_col=False, header=0, squeeze=True)
 journals = IF['Pubmed Journal Title']
 factors = IF['Impact Factor']
@@ -20,6 +20,9 @@ IFdict = dict(zip(journals,factors))
 # Which article types to consider
 types = ['Clinical Trial', 'Clinical Trial, Phase I', 'Clinical Trial, Phase II', 'Clinical Trial, Phase III',
         'Review', 'All']
+
+############# let's just lookat these two...###################        
+types= ['Review', 'All']
 
 # Which cancers to consider
 cancers = ['ovarian cancer','breast cancer','lung cancer','lymphoma','leukemia','brain cancer','pancreatic cancer',
@@ -70,10 +73,11 @@ def getfactors (RL, articletype, cancer):
     RL[columntitleIF] = IFs
     RL[columntitlecount] = article_count
 
-    print articletype
+    print articletype + ': ' + cancer
     print hit_count
     print miss_count
     print len(bad_journals)
+    print bad_journals
 
     return RL
 
@@ -82,4 +86,4 @@ for PT in types:
         RL = getfactors(RL, PT, cancer)
 
 
-RL.to_csv('C:\Users\LilaJeff\USnewsy\RL_USN_PMed_dz.csv', sep = ',' , index = False)
+RL.to_csv('C:\Users\JAG\USnewsy\RL_USN_PMed_dz.csv', sep = ',' , index = False)
