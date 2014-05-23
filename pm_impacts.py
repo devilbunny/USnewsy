@@ -6,7 +6,7 @@ import pandas as pd
 from pubmedsearch import pubmedsearch, pmhits
 
 # Read in the rank-list which includes the organizations
-RL_path = 'C:\Users\JAG\USnewsy\RL_5yr_Impact_Grants_USNdata.csv'
+RL_path = 'C:\Users\JAG\USnewsy\RL_USN_Grants_Impact_CTg_d.csv'
 RL = pd.read_csv(RL_path, index_col=False, header=0, squeeze=True)
 
 # Read in the impact-factor list
@@ -20,7 +20,6 @@ IFdict = dict(zip(journals,factors))
 # Which article types to consider
 types = ['Clinical Trial', 'Clinical Trial, Phase I', 'Clinical Trial, Phase II', 'Clinical Trial, Phase III',
         'Review', 'All']
-
 
 
 
@@ -70,6 +69,7 @@ def getfactors (RL, articletype):
     print hit_count
     print miss_count
     print len(bad_journals)
+    print bad_journals
 
     return RL
 
@@ -77,4 +77,4 @@ for PT in types:
     RL = getfactors(RL, PT)
 
 
-RL.to_csv('C:\Users\JAG\USnewsy\RL_5yr_Trial_Impact_Grants_USNdatad.csv', sep = ',' , index = False)
+RL.to_csv('C:\Users\JAG\USnewsy\RL_USN_Grants_Impact_CTg_e.csv', sep = ',' , index = False)

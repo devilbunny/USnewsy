@@ -9,8 +9,8 @@ import numpy as np
 
 
 RePORTER_path = 'C:\Users\JAG\USnewsy\RePORT_group.csv'
-RL_path = 'C:\Users\JAG\USnewsy\RL_5yr_journals.csv'
-RL_With_Grants_path = "C:\Users\JAG\USnewsy\RL-TG-JO.csv"
+RL_path = 'C:\Users\JAG\USnewsy\RL_USN_Grants_Impact_CTg_c.csv'
+RL_With_Grants_path = "C:\Users\JAG\USnewsy\RL_USN_Grants_Impact_CTg_d.csv"
 dropwords = ['.', '-', '/', ',', ' AND ',' OF ',' THE ',' UNIVERSITY ',' HOSPITAL ',' CLINIC ',' CAN ',' CTR ',
             ' CANCER ',' CENTER ' , ' INC ' , ' LLC ', ' MED ' , ' COL ' , 'FOUNDATION',
             ' SCHOOL ', ' MEDICINE ', ' CORP ', ' AT ', ' MEDICAL ', ' INSTITUTE ', 'INST',

@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 input_path = 'C:\Users\JAG\USnewsy\Clinicaltrials\\'
-output_path = 'C:\Users\JAG\USnewsy\Clinicaltrials\CTgovDz.csv'
+output_path = 'C:\Users\JAG\USnewsy\Clinicaltrials\CTgovDz'
 attributes = ['id_info/nct_id', 'brief_title', 'source', 'start_date', 'completion_date', 'phase']
 cancers = ['ovarian','breast','lung','lymphoma','leukemia','brain','pancreatic','melanoma','colon',
             'head and neck', 'prostate', 'soft tissue', 'esophageal','kidney', 'multiple myeloma',
@@ -63,18 +63,24 @@ def getdisease(path, cancers):
     print dz
     return dz
 
-def CTgov_append (directory, target, attributes, type_attributes):
+def CTgov_append (directory, target_dir, attributes, cancers):
     paths = os.listdir(directory)
     xmls = [path for path in paths if path[-3:] == "xml"]
     for path in xmls:
         values = parse_ctgov(directory + path, attributes)
-        disease = getdisease(directory + path, type_attributes)
+        disease = getdisease(directory + path, cancers)
         values.append(disease)
         trial = {'nct_id' : values[0], 'Title' : values[1], 'Institution' : values[2],
          'Start_date' : values[3], 'End_date' : values[4], 'Phase' : values[5], 'Disease' : values[6]}
         df = pd.DataFrame(trial, index = [0])
-        df.to_csv(target, sep = ',' , index = False, mode = 'a', encoding = 'utf-8')
-        print path
+        path = target_dir + '_all.csv'
+        df.to_csv(path, sep = ',', index = False, mode = 'a', encoding = 'utf-8')
+        for cancer in cancers:
+            if disease.count(cancer) > 0:
+                path = target_dir + '_' + cancer + '.csv'
+                df.to_csv(path, sep = ',' , index = False, mode = 'a', encoding = 'utf-8')
+            else:
+                pass
     return
 
 
